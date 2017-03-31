@@ -1,0 +1,41 @@
+{
+  "books": [
+    {
+      "title": "NativeScript in Action 2",
+      "id": 2897
+    },
+    {
+      "id": 8370,
+      "category": "web",
+      "title": "Using React & Redux"
+    },
+    {
+      "id": 2391,
+      "title": "Data Visualisation",
+      "category": "data engineering"
+    },
+    {
+      "title": "Efficient JavaScript",
+      "id": 5670
+    },
+    {
+      "id": 9087,
+      "title": "Learning React Native",
+      "category": "mobile"
+    },
+    {
+      "id": 8007,
+      "title": "Functional Programming",
+      "category": "web"
+    },
+    {
+      "id": 9997,
+      "title": "Building JavaScript Applications",
+      "category": "web"
+    },
+    {
+      "title": "My New Book",
+      "id": 9998
+    }
+  ]
+}
