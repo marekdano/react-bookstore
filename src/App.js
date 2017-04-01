@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import {Books} from './Components/Books';
 import {BookDetail} from './Components/Bookdetail';
-import './App.css';
 import {Dashboard} from './Components/Dashboard';
 import NotFoundPage from './Components/NotFoundPage';
+import './App.css';
 
 export class App extends Component {
   render() {
