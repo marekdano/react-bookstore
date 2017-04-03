@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
-export class Books extends React.Component {
+export class Books extends Component {
 
   constructor(props) {
     super(props);
@@ -45,17 +45,17 @@ export class Books extends React.Component {
   };
 
   remove = (bookId) => {
-   // Remove the book from the list by http://localhost:5000/books/bookId
-   axios.delete(`http://localhost:5000/books/${bookId}`)
-     .then(() => {
-       const books = this.state.books.filter((book) => {
-         return book.id !== bookId;
-       });
-       this.setState({ books });
-     })
-     .catch(error => {
-       console.log(error)
-     });
+    // Remove the book from the list by http://localhost:5000/books/bookId
+    axios.delete(`http://localhost:5000/books/${bookId}`)
+      .then(() => {
+        const books = this.state.books.filter((book) => {
+          return book.id !== bookId;
+        });
+        this.setState({ books });
+      })
+      .catch(error => {
+        console.log(error)
+      });
   };
 
   render() {
