@@ -1,9 +1,6 @@
-import React, {Component} from 'react';
-import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
-import {Books} from './Components/Books';
-import {BookDetail} from './Components/Bookdetail';
-import {Dashboard} from './Components/Dashboard';
-import NotFoundPage from './Components/NotFoundPage';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import Routes from './routes';
 import './App.css';
 
 export class App extends Component {
@@ -17,13 +14,8 @@ export class App extends Component {
             <Link to="/books">Manage Books</Link>
           </nav>
 
-          <Switch>
-            <Route exact path="/" component={Dashboard} />
-            <Route path="/books" component={Books} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/detail/:id" component={BookDetail} />
-            <Route component={NotFoundPage} />
-          </Switch>
+          <Routes />
+
         </div>
       </Router>
     );
