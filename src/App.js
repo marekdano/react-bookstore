@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import Routes from './routes';
+//import { ConnectedRouter } from 'react-router-redux'
+import routes from './routes';
+//import { history } from './index';
 import './App.css';
 
 export class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log("Props: ", this.props);
+  }
   render() {
+    console.log("App props: ", this.props);
     return (
       <Router>
         <div className="container">
@@ -13,9 +20,9 @@ export class App extends Component {
             <Link to="/dashboard">Books</Link>
             <Link to="/books">Manage Books</Link>
           </nav>
-
-          <Routes />
-
+          <div>
+            {routes}          
+          </div>  
         </div>
       </Router>
     );

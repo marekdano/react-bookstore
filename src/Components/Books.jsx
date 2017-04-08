@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchBooks } from '../actions/index';
 
-export class Books extends React.Component {
+class Books extends Component {
 
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      books: [],
-      inputContent: "",
-      selectedBook: null
-    };
+  //   // this.state = {
+  //   //   //books: [],
+  //   //   //inputContent: "",
+  //   //   selectedBook: null
+  //   // };
+  //}
+
+  componentWillMount() {
+    console.log("Props Books in componentWillMount: ", this.props);
+    this.props.fetchBooks();
   }
 
   componentDidMount() {
-    this.refreshList();
+    //console.log("Props in Books in componentDidMount: ", this.props);
+    //this.refreshList();
   }
 
   refreshList = () => {
@@ -59,11 +67,12 @@ export class Books extends React.Component {
   };
 
   render() {
+    console.log("Props in Books: ", this.props);
     return (
       <div>
         <h2>My Library</h2>
         <div>
-          <label>Book's title:</label>
+          {/*<label>Book's title:</label>
           <input
             type="text"
             value={this.state.inputContent}
@@ -71,37 +80,45 @@ export class Books extends React.Component {
           />
           <button onClick={this.add}>
             Add
-          </button>
+          </button>*/}
         </div>
         <br />
         <hr />
         <ul className="books">
-          {this.state.books.map(book => (
+          {this.props.books.map(book => (
             <li
               key={book.id}
-              className={this.state.selectedBook && this.state.selectedBook.id === book.id && 'selected'}
-              onClick={() => this.setState({selectedBook: book})}
+              //className={this.state.selectedBook && this.state.selectedBook.id === book.id && 'selected'}
+              //onClick={() => this.setState({selectedBook: book})}
             >
               <span className="badge">{book.id}</span>
               {book.title}
               <button
                 className="delete"
-                onClick={() => this.remove(book.id)}
+                //onClick={() => this.remove(book.id)}
               >x
               </button>
             </li>
           ))}
         </ul>
 
-        {this.state.selectedBook &&
+        {/*{this.state.selectedBook &&
         <div>
           <h2>
             {this.state.selectedBook.title} is my favorite book
           </h2>
           <Link to={`/detail/${this.state.selectedBook.id}`}>View details</Link>
         </div>
-        }
+        }*/}
+
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  console.log("State in Books: ", state);
+  return { books: state.books.all };
+}
+
+export default connect(mapStateToProps, {fetchBooks})(Books);
