@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-//import { ConnectedRouter } from 'react-router-redux'
-import routes from './routes';
-//import { history } from './index';
+import routes from '../routes';
+
 import './App.css';
 
 export class App extends Component {

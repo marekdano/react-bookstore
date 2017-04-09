@@ -2,40 +2,30 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchBooks } from '../actions/index';
+import { fetchBooks, deleteBook } from '../actions/index';
 
 class Books extends Component {
 
-  // constructor(props) {
-  //   super(props);
-
-  //   // this.state = {
-  //   //   //books: [],
-  //   //   //inputContent: "",
-  //   //   selectedBook: null
-  //   // };
-  //}
-
   componentWillMount() {
     console.log("Props Books in componentWillMount: ", this.props);
-    this.props.fetchBooks();
+    this.props.onGetBooks();
   }
 
   componentDidMount() {
-    //console.log("Props in Books in componentDidMount: ", this.props);
+    console.log("Props in Books in componentDidMount: ", this.props);
     //this.refreshList();
   }
 
-  refreshList = () => {
-    // Get the book list @ http://localhost:5000/books
-    axios.get("http://localhost:5000/books")
-      .then(response => {
-        this.setState({books: response.data});
-      })
-      .catch(error => {
-        console.log(error)
-      });
-  };
+  // refreshList = () => {
+  //   // Get the book list @ http://localhost:5000/books
+  //   axios.get("http://localhost:5000/books")
+  //     .then(response => {
+  //       this.setState({books: response.data});
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //     });
+  // };
 
   add = () => {
     // Add your new book to http://localhost:5000/books 
@@ -88,14 +78,14 @@ class Books extends Component {
           {this.props.books.map(book => (
             <li
               key={book.id}
-              //className={this.state.selectedBook && this.state.selectedBook.id === book.id && 'selected'}
+              className={this.props.selectedBook && this.props.selectedBook.id === book.id && 'selected'}
               //onClick={() => this.setState({selectedBook: book})}
             >
               <span className="badge">{book.id}</span>
               {book.title}
               <button
                 className="delete"
-                //onClick={() => this.remove(book.id)}
+                onClick={() => this.props.onDeleteBook(book.id)}
               >x
               </button>
             </li>
@@ -116,9 +106,24 @@ class Books extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   console.log("State in Books: ", state);
-  return { books: state.books.all };
+  return { 
+    books: state.books.all,
+    book: state.books.book 
+  };
 }
 
-export default connect(mapStateToProps, {fetchBooks})(Books);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetBooks: () => {
+      dispatch(fetchBooks())
+    },
+    onDeleteBook: (id) => {
+      dispatch(deleteBook(id))
+    }
+  }
+}
+
+//export default connect(mapStateToProps, {fetchBooks})(Books);
+export default connect(mapStateToProps, mapDispatchToProps)(Books);

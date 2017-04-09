@@ -5,17 +5,11 @@ const ROOT_URL = 'http://localhost:5000';
 
 export function fetchBooks() {
   const request = axios.get(`${ROOT_URL}/books`);
-	console.log("Request: ", request);
+	console.log("Request getting all books: ", request);
 
   return {
     type: FETCH_BOOKS,
     payload: request
-      // new Promise(resolve => {
-      //   setTimeout(() => request.then(response => {
-      //     console.log("Response: ", response);
-      //     resolve(response.data);
-      //   }), 1000);
-      // })
   };
 }
 
@@ -37,8 +31,9 @@ export function fetchBook(id) {
   };
 }
 
-export function deleteBook(id) {
-  const request = axios.delete(`${ROOT_URL}/books/${id}`);
+export function deleteBook(bookId) {
+  const request = axios.delete(`${ROOT_URL}/books/${bookId}`);
+  console.log("Request deleting the book: ", request);
 
   return {
     type: DELETE_BOOK,
