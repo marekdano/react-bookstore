@@ -1,7 +1,7 @@
 {
   "books": [
     {
-      "title": "NativeScript in Action 2",
+      "title": "NativeScript in Action",
       "id": 2897
     },
     {
@@ -36,14 +36,6 @@
     {
       "title": "My New Book 3",
       "id": 9998
-    },
-    {
-      "title": "My New Book 3",
-      "id": 9999
-    },
-    {
-      "title": "My New Book 3",
-      "id": 10000
     }
   ]
 }

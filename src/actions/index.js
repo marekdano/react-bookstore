@@ -1,12 +1,16 @@
 import axios from 'axios';
-import { FETCH_BOOKS, FETCH_BOOK, CREATE_BOOK, DELETE_BOOK } from './constants';
+import { 
+  FETCH_BOOKS, 
+  FETCH_BOOK, 
+  CREATE_BOOK, 
+  DELETE_BOOK,
+  SELECT_BOOK } from './constants';
 
 const ROOT_URL = 'http://localhost:5000';
 
 export function fetchBooks() {
   const request = axios.get(`${ROOT_URL}/books`);
-	console.log("Request getting all books: ", request);
-
+  
   return {
     type: FETCH_BOOKS,
     payload: request
@@ -33,10 +37,18 @@ export function fetchBook(id) {
 
 export function deleteBook(bookId) {
   const request = axios.delete(`${ROOT_URL}/books/${bookId}`);
-  console.log("Request deleting the book: ", request);
-
+  
   return {
     type: DELETE_BOOK,
     payload: request
   };
+}
+
+export function selectBook(id) {
+  return {
+    type: SELECT_BOOK,
+    payload: new Promise((resolve) => {
+      return resolve(id);
+    })
+  }
 }

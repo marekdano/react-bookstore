@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchBooks, deleteBook } from '../actions/index';
+import { fetchBooks, deleteBook, selectBook } from '../actions/index';
 
 class Books extends Component {
 
@@ -117,10 +117,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetBooks: () => {
-      dispatch(fetchBooks())
+      dispatch(fetchBooks());
     },
     onDeleteBook: (id) => {
-      dispatch(deleteBook(id))
+      dispatch(selectBook(id));
+      dispatch(deleteBook(id));
     }
   }
 }
