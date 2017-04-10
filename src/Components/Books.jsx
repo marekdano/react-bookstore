@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchBooks, deleteBook, selectBook } from '../actions/index';
+import { 
+  fetchBooks, 
+  deleteBook, 
+  selectBook, 
+  fetchBook } from '../actions/index';
 
 class Books extends Component {
 
   componentWillMount() {
     console.log("Props Books in componentWillMount: ", this.props);
     this.props.onGetBooks();
-  }
-
-  componentDidMount() {
-    console.log("Props in Books in componentDidMount: ", this.props);
-    //this.refreshList();
   }
 
   // refreshList = () => {
@@ -42,19 +41,19 @@ class Books extends Component {
       });
   };
 
-  remove = (bookId) => {
-   // Remove the book from the list by http://localhost:5000/books/bookId
-   axios.delete(`http://localhost:5000/books/${bookId}`)
-     .then(() => {
-       const books = this.state.books.filter((book) => {
-         return book.id !== bookId;
-       });
-       this.setState({ books });
-     })
-     .catch(error => {
-       console.log(error)
-     });
-  };
+  // remove = (bookId) => {
+  //  // Remove the book from the list by http://localhost:5000/books/bookId
+  //  axios.delete(`http://localhost:5000/books/${bookId}`)
+  //    .then(() => {
+  //      const books = this.state.books.filter((book) => {
+  //        return book.id !== bookId;
+  //      });
+  //      this.setState({ books });
+  //    })
+  //    .catch(error => {
+  //      console.log(error)
+  //    });
+  // };
 
   render() {
     console.log("Props in Books: ", this.props);
@@ -79,7 +78,7 @@ class Books extends Component {
             <li
               key={book.id}
               className={this.props.selectedBook && this.props.selectedBook.id === book.id && 'selected'}
-              //onClick={() => this.setState({selectedBook: book})}
+              onClick={() => this.props.onGetBook(book.id)}
             >
               <span className="badge">{book.id}</span>
               {book.title}
@@ -92,14 +91,14 @@ class Books extends Component {
           ))}
         </ul>
 
-        {/*{this.state.selectedBook &&
+        {this.props.book &&
         <div>
           <h2>
-            {this.state.selectedBook.title} is my favorite book
+            {this.props.book.title} is my favorite book
           </h2>
-          <Link to={`/detail/${this.state.selectedBook.id}`}>View details</Link>
+          <Link to={`/detail/${this.props.book.id}`}>View details</Link>
         </div>
-        }*/}
+        }
 
       </div>
     );
@@ -122,6 +121,9 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteBook: (id) => {
       dispatch(selectBook(id));
       dispatch(deleteBook(id));
+    },
+    onGetBook: (id) => {
+      dispatch(fetchBook(id));
     }
   }
 }
