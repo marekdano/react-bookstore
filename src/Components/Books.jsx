@@ -45,6 +45,9 @@ class Books extends Component {
         </div>
         <br />
         <hr />
+
+        {this.props.isFetching && <h3>Loading...</h3>}
+        
         <ul className="books">
           {this.props.books.map(book => (
             <li
@@ -83,16 +86,15 @@ const validate = (values) => {
   if (!values.title) {
     errors.title = 'Title required';
   }
-  
+
   return errors;
 }
 
 const mapStateToProps = (state) => {
-  console.log("State in Book: ", state);
-  
   return { 
     books: state.books.all,
-    book: state.books.book 
+    book: state.books.book, 
+    isFetching: state.books.isFetching 
   };
 }
 
@@ -109,7 +111,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(fetchBook(id));
     },
     onSubmit: (book) => {
-      console.log("book: ", book);
       dispatch(createBook(book));
       dispatch(reset('BookForm'));
     }
