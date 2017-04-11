@@ -4,7 +4,9 @@ import {
   FETCH_BOOK, 
   CREATE_BOOK, 
   DELETE_BOOK,
-  SELECT_BOOK } from './constants';
+  SELECT_BOOK,
+  UPDATE_BOOK,
+  LOAD } from './constants';
 
 const ROOT_URL = 'http://localhost:5000';
 
@@ -26,8 +28,8 @@ export function createBook(props) {
   };
 }
 
-export function fetchBook(id) {
-  const request = axios.get(`${ROOT_URL}/books/${id}`);
+export function fetchBook(bookId) {
+  const request = axios.get(`${ROOT_URL}/books/${bookId}`);
 
   return {
     type: FETCH_BOOK,
@@ -44,6 +46,15 @@ export function deleteBook(bookId) {
   };
 }
 
+export function updateBook(bookId, props) {
+  const request = axios.put(`${ROOT_URL}/books/${bookId}`, props);
+  
+  return {
+    type: UPDATE_BOOK,
+    payload: request
+  };
+}
+
 export function selectBook(id) {
   return {
     type: SELECT_BOOK,
@@ -52,3 +63,8 @@ export function selectBook(id) {
     })
   }
 }
+
+/**
+ * Simulates data loaded into LOAD reducer from somewhere
+ */
+export const load = data => ({ type: LOAD, data })

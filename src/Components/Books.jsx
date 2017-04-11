@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { reduxForm, Field, reset } from 'redux-form';
@@ -27,7 +26,7 @@ class Books extends Component {
   )
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, pristine, submitting } = this.props;
 
     return (
       <div>
@@ -40,7 +39,7 @@ class Books extends Component {
                 type="text"
                 label="Book's title" 
                 placeholder="Title" />
-              <button type="submit" disabled={submitting}>Add</button>
+              <button type="submit" disabled={pristine || submitting}>Add</button>
             </div>  
           </form>
         </div>
@@ -89,6 +88,8 @@ const validate = (values) => {
 }
 
 const mapStateToProps = (state) => {
+  console.log("State in Book: ", state);
+  
   return { 
     books: state.books.all,
     book: state.books.book 
@@ -108,6 +109,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(fetchBook(id));
     },
     onSubmit: (book) => {
+      console.log("book: ", book);
       dispatch(createBook(book));
       dispatch(reset('BookForm'));
     }

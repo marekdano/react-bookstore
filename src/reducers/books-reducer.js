@@ -4,7 +4,9 @@ import {
 	FETCH_BOOK,
 	DELETE_BOOK,
 	SELECT_BOOK, 
-	CREATE_BOOK } from '../actions/constants';
+	CREATE_BOOK,
+	UPDATE_BOOK,
+	LOAD } from '../actions/constants';
 
 const INITIAL_STATE = { all: [], book: null, selectedBookId: null };
 
@@ -41,6 +43,18 @@ export default function(state = INITIAL_STATE, action) {
 				all: [...state.all, action.payload.data]
 			}
 
+		case `${UPDATE_BOOK}_FULFILLED`:
+			return {
+				...state,
+				book: action.payload.data
+			}
+	
+		case LOAD:
+			return {
+				...state,
+				book: action.data
+			}
+	
 		default:
 			return state;
 		}

@@ -13,7 +13,7 @@ export const App = () => {
           <Link to="/dashboard">Books</Link>
           <Link to="/books">Manage Books</Link>
         </nav>
-        <div>
+        <div className="container">
           {routes}          
         </div>  
       </div>
