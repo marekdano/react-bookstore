@@ -3,7 +3,8 @@ import {
 	FETCH_BOOKS, 
 	FETCH_BOOK,
 	DELETE_BOOK,
-	SELECT_BOOK } from '../actions/constants';
+	SELECT_BOOK, 
+	CREATE_BOOK } from '../actions/constants';
 
 const INITIAL_STATE = { all: [], book: null, selectedBookId: null };
 
@@ -23,13 +24,21 @@ export default function(state = INITIAL_STATE, action) {
 		case `${DELETE_BOOK}_FULFILLED`:
 			return {
 			 	...state,
-				all: state.all.filter(book => book.id !== state.selectedBookId)
+				all: state.all.filter(book => book.id !== state.selectedBookId),
+				selectedBookId: null,
+				book: null
 			};
 
 		case `${SELECT_BOOK}_FULFILLED`:
 			return {
 				...state,
 				selectedBookId: action.payload 
+			}
+		
+		case `${CREATE_BOOK}_FULFILLED`:
+			return {
+				...state,
+				all: [...state.all, action.payload.data]
 			}
 
 		default:

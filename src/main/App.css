@@ -33,6 +33,12 @@ nav a.active {
     color: #039be5;
 }
 
+.message-error {
+    margin: 0 1rem;
+    font-style: italic;
+    color: red;
+}
+
 .selected {
     background-color: #CFD8DC !important;
     color: white;

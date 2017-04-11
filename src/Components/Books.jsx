@@ -1,75 +1,48 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { reduxForm, Field, reset } from 'redux-form';
 import { 
   fetchBooks, 
   deleteBook, 
   selectBook, 
-  fetchBook } from '../actions/index';
+  fetchBook,
+  createBook } from '../actions/index';
 
 class Books extends Component {
 
   componentWillMount() {
-    console.log("Props Books in componentWillMount: ", this.props);
     this.props.onGetBooks();
   }
 
-  // refreshList = () => {
-  //   // Get the book list @ http://localhost:5000/books
-  //   axios.get("http://localhost:5000/books")
-  //     .then(response => {
-  //       this.setState({books: response.data});
-  //     })
-  //     .catch(error => {
-  //       console.log(error)
-  //     });
-  // };
-
-  add = () => {
-    // Add your new book to http://localhost:5000/books 
-    // json server will create an id for you if you don't provide one
-    axios.post("http://localhost:5000/books", {
-      title: this.state.inputContent
-      })
-      .then(response => {
-        console.log(response);
-        this.setState({books: [...this.state.books, response.data]})
-      })
-      .catch(error => {
-        console.log(error)
-      });
-  };
-
-  // remove = (bookId) => {
-  //  // Remove the book from the list by http://localhost:5000/books/bookId
-  //  axios.delete(`http://localhost:5000/books/${bookId}`)
-  //    .then(() => {
-  //      const books = this.state.books.filter((book) => {
-  //        return book.id !== bookId;
-  //      });
-  //      this.setState({ books });
-  //    })
-  //    .catch(error => {
-  //      console.log(error)
-  //    });
-  // };
+  renderField = ({ input, label, placeholder, type, meta: { touched, error } }) => (
+    <div>
+      <label>{label}</label>
+      <div>
+        <input {...input} placeholder={placeholder} type={type}/>
+        {touched && error && <span className="message-error">{error}</span>}
+      </div>
+    </div>
+  )
 
   render() {
-    console.log("Props in Books: ", this.props);
+    const { handleSubmit, submitting } = this.props;
+
     return (
       <div>
         <h2>My Library</h2>
-        <div>
-          {/*<label>Book's title:</label>
-          <input
-            type="text"
-            value={this.state.inputContent}
-            onChange={(e) => this.setState({inputContent: e.target.value})}
-          />
-          <button onClick={this.add}>
-            Add
-          </button>*/}
+        <div>        
+          <form onSubmit={handleSubmit(this.props.onSubmit)}>
+            <div>
+              <Field name="title" 
+                component={this.renderField} 
+                type="text"
+                label="Book's title" 
+                placeholder="Title" />
+              <button type="submit" disabled={submitting}>Add</button>
+            </div>  
+          </form>
         </div>
         <br />
         <hr />
@@ -105,8 +78,17 @@ class Books extends Component {
   }
 }
 
+const validate = (values) => {
+  const errors = {};
+
+  if (!values.title) {
+    errors.title = 'Title required';
+  }
+  
+  return errors;
+}
+
 const mapStateToProps = (state) => {
-  console.log("State in Books: ", state);
   return { 
     books: state.books.all,
     book: state.books.book 
@@ -124,9 +106,25 @@ const mapDispatchToProps = (dispatch) => {
     },
     onGetBook: (id) => {
       dispatch(fetchBook(id));
+    },
+    onSubmit: (book) => {
+      dispatch(createBook(book));
+      dispatch(reset('BookForm'));
     }
   }
 }
 
-//export default connect(mapStateToProps, {fetchBooks})(Books);
-export default connect(mapStateToProps, mapDispatchToProps)(Books);
+// reduxForm: 1st is form config, 2nd is mapStateToProps, 3rd is mapDispatchToProps
+Books = reduxForm({
+  form: 'BookForm',
+  validate
+}, {}, mapDispatchToProps)(Books);
+
+// Pass methods {fetchBooks, selectBook, fetchBook, createBook} 
+// instead of creating mapDispatchToProps as a 2nd argument.
+// export default connect(mapStateToProps, {fetchBooks})(Books);
+
+// connect: first argument is mapStateToProps, 2nd is mapDispatchToProps
+Books = connect(mapStateToProps, mapDispatchToProps)(Books);
+
+export default Books;

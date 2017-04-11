@@ -22,7 +22,7 @@ const store = (preloadedState) => {
       promiseMiddleware()    
     )
   );
-  console.log("Store: ", store);
+  
   return store;
 };
 
