@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Books from './Components/Books';
 import BookDetail from './Components/Bookdetail';
-import {Dashboard} from './Components/Dashboard';
+import Dashboard from './Components/Dashboard';
 import NotFoundPage from './Components/NotFoundPage';
 
 const routes = (

@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { fetchBook, updateBook, load as loadSelectedBook } from '../actions/index';
+import { fetchBook, updateBook } from '../actions/index';
 import { reduxForm, Field } from 'redux-form';
 
 class BookDetail extends Component {
 
   componentWillMount(){
-    this.props.onGetBook(this.props.match.params.id)
-    this.props.load(this.props.book); 
+    this.props.onGetBook(this.props.match.params.id) 
   }
 
   goBack = () => {
@@ -51,8 +50,6 @@ class BookDetail extends Component {
 };
 
 const mapStateToProps = (state) => {
-  console.log("State in BookDetail: ", state);
-  
   return {
     book: state.books.book,
     initialValues: state.books.book
@@ -62,16 +59,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetBook: (id, book) => {
-      console.log("get book by id: ", id);
       dispatch(fetchBook(id))   
     },
     onUpdateBook: (book) => {
-      console.log("update book: ", book);
       dispatch(updateBook(book.id, book))
-    },
-    load: (book) => {
-      console.log("load a book: ", book);
-      dispatch(loadSelectedBook(book));
     }
   }
 }

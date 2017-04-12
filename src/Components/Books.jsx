@@ -10,7 +10,7 @@ import {
   createBook } from '../actions/index';
 
 class Books extends Component {
-
+  
   componentWillMount() {
     this.props.onGetBooks();
   }
@@ -52,7 +52,7 @@ class Books extends Component {
           {this.props.books.map(book => (
             <li
               key={book.id}
-              className={this.props.selectedBook && this.props.selectedBook.id === book.id && 'selected'}
+              className={this.props.book && this.props.book.id === book.id && 'selected'}
               onClick={() => this.props.onGetBook(book.id)}
             >
               <span className="badge">{book.id}</span>
