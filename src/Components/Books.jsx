@@ -1,107 +1,134 @@
-import React, {Component} from 'react';
-import axios from 'axios';
-import {Link} from 'react-router-dom';
 
-export class Books extends Component {
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { reduxForm, Field, reset } from 'redux-form';
+import { 
+  fetchBooks, 
+  deleteBook, 
+  selectBook, 
+  fetchBook,
+  createBook } from '../actions/index';
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      books: [],
-      inputContent: "",
-      selectedBook: null
-    };
+class Books extends Component {
+  
+  componentWillMount() {
+    this.props.onGetBooks();
   }
 
-  componentDidMount() {
-    this.refreshList();
-  }
-
-  refreshList = () => {
-    // Get the book list @ http://localhost:5000/books
-    axios.get("http://localhost:5000/books")
-      .then(response => {
-        this.setState({books: response.data});
-      })
-      .catch(error => {
-        console.log(error)
-      });
-  };
-
-  add = () => {
-    // Add your new book to http://localhost:5000/books 
-    // json server will create an id for you if you don't provide one
-    axios.post("http://localhost:5000/books", {
-      title: this.state.inputContent
-      })
-      .then(response => {
-        console.log(response);
-        this.setState({books: [...this.state.books, response.data]})
-      })
-      .catch(error => {
-        console.log(error)
-      });
-  };
-
-  remove = (bookId) => {
-    // Remove the book from the list by http://localhost:5000/books/bookId
-    axios.delete(`http://localhost:5000/books/${bookId}`)
-      .then(() => {
-        const books = this.state.books.filter((book) => {
-          return book.id !== bookId;
-        });
-        this.setState({ books });
-      })
-      .catch(error => {
-        console.log(error)
-      });
-  };
+  renderField = ({ input, label, placeholder, type, meta: { touched, error } }) => (
+    <div>
+      <label>{label}</label>
+      <div>
+        <input {...input} placeholder={placeholder} type={type}/>
+        {touched && error && <span className="message-error">{error}</span>}
+      </div>
+    </div>
+  )
 
   render() {
+    const { handleSubmit, pristine, submitting } = this.props;
+
     return (
       <div>
         <h2>My Library</h2>
-        <div>
-          <label>Book's title:</label>
-          <input
-            type="text"
-            value={this.state.inputContent}
-            onChange={(e) => this.setState({inputContent: e.target.value})}
-          />
-          <button onClick={this.add}>
-            Add
-          </button>
+        <div>        
+          <form onSubmit={handleSubmit(this.props.onSubmit)}>
+            <div>
+              <Field name="title" 
+                component={this.renderField} 
+                type="text"
+                label="Book's title" 
+                placeholder="Title" />
+              <button type="submit" disabled={pristine || submitting}>Add</button>
+            </div>  
+          </form>
         </div>
         <br />
         <hr />
+
+        {this.props.isFetching && <h3>Loading...</h3>}
+        
         <ul className="books">
-          {this.state.books.map(book => (
+          {this.props.books.map(book => (
             <li
               key={book.id}
-              className={this.state.selectedBook && this.state.selectedBook.id === book.id && 'selected'}
-              onClick={() => this.setState({selectedBook: book})}
+              className={this.props.book && this.props.book.id === book.id && 'selected'}
+              onClick={() => this.props.onGetBook(book.id)}
             >
               <span className="badge">{book.id}</span>
               {book.title}
               <button
                 className="delete"
-                onClick={() => this.remove(book.id)}
+                onClick={() => this.props.onDeleteBook(book.id)}
               >x
               </button>
             </li>
           ))}
         </ul>
 
-        {this.state.selectedBook &&
+        {this.props.book &&
         <div>
           <h2>
-            {this.state.selectedBook.title} is my favorite book
+            {this.props.book.title} is my favorite book
           </h2>
-          <Link to={`/detail/${this.state.selectedBook.id}`}>View details</Link>
+          <Link to={`/detail/${this.props.book.id}`}>View details</Link>
         </div>
         }
+
       </div>
     );
   }
 }
+
+const validate = (values) => {
+  const errors = {};
+
+  if (!values.title) {
+    errors.title = 'Title required';
+  }
+
+  return errors;
+}
+
+const mapStateToProps = (state) => {
+  return { 
+    books: state.books.all,
+    book: state.books.book, 
+    isFetching: state.books.isFetching 
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetBooks: () => {
+      dispatch(fetchBooks());
+    },
+    onDeleteBook: (id) => {
+      dispatch(selectBook(id));
+      dispatch(deleteBook(id));
+    },
+    onGetBook: (id) => {
+      dispatch(fetchBook(id));
+    },
+    onSubmit: (book) => {
+      dispatch(createBook(book));
+      dispatch(reset('BookForm'));
+    }
+  }
+}
+
+// reduxForm: 1st is form config, 2nd is mapStateToProps, 3rd is mapDispatchToProps
+Books = reduxForm({
+  form: 'BookForm',
+  validate
+}, {}, mapDispatchToProps)(Books);
+
+// Pass methods {fetchBooks, selectBook, fetchBook, createBook} 
+// instead of creating mapDispatchToProps as a 2nd argument.
+// export default connect(mapStateToProps, {fetchBooks})(Books);
+
+// connect: first argument is mapStateToProps, 2nd is mapDispatchToProps
+Books = connect(mapStateToProps, mapDispatchToProps)(Books);
+
+export default Books;

@@ -1,80 +1,77 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { fetchBook, updateBook } from '../actions/index';
+import { reduxForm, Field } from 'redux-form';
 
-export class BookDetail extends Component {
-    constructor(props) {
-        super(props);
+class BookDetail extends Component {
 
-        this.state = {
-            book: {
-                id: 0,
-                title: ""
-            },
-        };
-    }
+  componentWillMount(){
+    this.props.onGetBook(this.props.match.params.id) 
+  }
 
-    componentDidMount(){
-        this.fetchBook(this.props.match.params.id);
-    }
+  goBack = () => {
+    this.props.history.goBack();
+  };
 
-    fetchBook = (id) => {
-        // Get the book details at http://localhost:5000/books/id
-        axios.get(`http://localhost:5000/books/${id}`)
-            .then(response => {
-                this.setState({book: response.data});
-            })
-            .catch(error => {
-                console.log(error)
-            });
-    };
+  render() {
+    const { book, handleSubmit } = this.props;
 
-    update = (event) => {
-        this.setState({
-            book: {
-                ...this.state.book,
-                title: event.target.value
-            }
-        });
-    }
+    return (
+      book ?
+        <div>
+          <h2>{book.title} details!</h2>
+          <form onSubmit={handleSubmit(this.props.onUpdateBook)}>
+            <div>
+              <label>id: </label>
+              {book.id}
+            </div>
+            <label>Book's title:</label>
+            <div>
+              <Field name="title" 
+                  component="input"           
+                  type="text"
+                  placeholder="Title" />
+            </div>
+            <label>Category:</label>
+            <div>
+              <Field name="category" 
+                  component="input"
+                  type="text"
+                  placeholder="Category" />
+            </div>
+            <button type="submit">Save</button>
+          </form>
+          <button onClick={this.goBack}>Back</button>
+        </div>
+        :
+        <div />
+    );
+  }
+};
 
-    save = () => {
-        // Update the book details at http://localhost:5000/books/id 
-        const {book} = this.state;
-
-        axios.put(`http://localhost:5000/books/${book.id}`, {
-                title: book.title
-            })
-            .then(response => {
-                this.setState({book: response.data});
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    };
-
-    goBack = () => {
-        this.props.history.goBack();
-    };
-
-    render() {
-        const {book} = this.state;
-    
-        return (
-            book ?
-                <div >
-                    <h2>{book.title} details!</h2>
-                    <div>
-                        <label>id: </label>{book.id}</div>
-                    <div>
-                        <label>Title: </label>
-                        <input value={book.title} onChange={this.update} placeholder="title"/>
-                    </div>
-                    <button onClick={this.goBack}>Back</button>
-                    <button onClick={this.save}>Save</button>
-                </div>
-                :
-                <div />
-        );
-    }
+const mapStateToProps = (state) => {
+  return {
+    book: state.books.book,
+    initialValues: state.books.book
+  };
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetBook: (id, book) => {
+      dispatch(fetchBook(id))   
+    },
+    onUpdateBook: (book) => {
+      dispatch(updateBook(book.id, book))
+    }
+  }
+}
+
+BookDetail = reduxForm({
+  form: 'newBookForm',
+}, mapStateToProps, mapDispatchToProps)(BookDetail);
+
+BookDetail = connect(mapStateToProps, mapDispatchToProps)(BookDetail);
+
+export default BookDetail;
 

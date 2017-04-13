@@ -14,7 +14,7 @@ export class BookSearch extends Component {
     search = (event) => {
         // You can fetch the books at this url http://localhost:5000/books?q=yourSearchTerm
         const query = event.target.value;
-        console.log("Query: ", query);
+        
         axios.get(`http://localhost:5000/books?q=${query}`)
             .then(response => {
                 this.setState({books: response.data});
