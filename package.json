@@ -24,7 +24,7 @@
     "react-scripts": "0.9.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start & nodemon ./server/index.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "server": "nodemon ./server/index.js",

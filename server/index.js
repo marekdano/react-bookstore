@@ -4,22 +4,21 @@ const http = require('http');
 const bodyParser = require('body-parser');
 // use morgan for login http requests to the console 
 const morgan = require('morgan');
-//const router = require('./router');
+const router = require('./router');
 const mongoose = require('mongoose');
 
 // DB setup
 mongoose.connect('mongodb://localhost:auth/auth');
 
 // middleware setup
-//const server = jsonServer.create();
 const server = express();
-const router = jsonServer.router('data.json');
-const middlewares = jsonServer.defaults();
-server.use(middlewares);
-server.use('/', router);
+// mount json-server on a specific end-point, '/api'
+// Optional except if you want to have json-server defaults which are logger, static, cors and no-cache
+server.use('/api', jsonServer.defaults());
+server.use('/api', jsonServer.router('data.json'));
 server.use(morgan('combined'));
 server.use(bodyParser.json({ type: '*/*' }));
-//router(server);
+router(server);
 
 // server setup
 const port = process.env.PORT || 5000;

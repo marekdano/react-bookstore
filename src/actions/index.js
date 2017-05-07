@@ -8,7 +8,7 @@ import {
   UPDATE_BOOK,
   LOAD } from './constants';
 
-const ROOT_URL = 'http://localhost:5000';
+const ROOT_URL = 'http://localhost:5000/api';
 
 export function fetchBooks() {
   const request = axios.get(`${ROOT_URL}/books`);
