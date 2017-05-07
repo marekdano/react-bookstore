@@ -4,6 +4,11 @@ const http = require('http');
 const bodyParser = require('body-parser');
 // use morgan for login http requests to the console 
 const morgan = require('morgan');
+//const router = require('./router');
+const mongoose = require('mongoose');
+
+// DB setup
+mongoose.connect('mongodb://localhost:auth/auth');
 
 // middleware setup
 //const server = jsonServer.create();
@@ -14,6 +19,7 @@ server.use(middlewares);
 server.use('/', router);
 server.use(morgan('combined'));
 server.use(bodyParser.json({ type: '*/*' }));
+//router(server);
 
 // server setup
 const port = process.env.PORT || 5000;
