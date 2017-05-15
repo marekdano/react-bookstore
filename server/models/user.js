@@ -9,7 +9,7 @@ const userSchema = new Schema({
 	password: String 
 })
 
-// on save hook, ncrypt password
+// on save hook, encrypt password
 // before saving a model, run this function
 userSchema.pre('save', function(next) {
 	// get access to the user model 
@@ -29,6 +29,15 @@ userSchema.pre('save', function(next) {
 		});
 	})
 });
+
+// compare provided password with the password in the database 
+userSchema.methods.comparePassword = function(candidatePassword, callback) {
+	bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+		if (err) { return callback(err); }
+
+		callback(null, isMatch);
+	})
+}
 
 // create the model class
 const ModelClass = mongoose.model('user', userSchema);
