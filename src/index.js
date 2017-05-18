@@ -9,7 +9,8 @@ import promiseMiddleware from 'redux-promise-middleware';
 import { App } from './main/App';
 
 // Dependencies
-import 'font-awesome/css/font-awesome.css'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/css/font-awesome.css';
 import './index.css';
 
 

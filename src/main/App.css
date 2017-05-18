@@ -20,6 +20,10 @@ nav a {
     border-radius: 4px;
 }
 
+nav a.header-link {
+    margin: 0;
+}
+
 nav a:visited, a:link {
     color: #607D8B;
 }

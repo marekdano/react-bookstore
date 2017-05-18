@@ -6,6 +6,7 @@
     "axios": "^0.15.3",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
+    "bootstrap": "^3.3.7",
     "express": "^4.15.2",
     "font-awesome": "^4.7.0",
     "jwt-simple": "^0.5.1",
@@ -29,7 +30,7 @@
     "react-scripts": "0.9.5"
   },
   "scripts": {
-    "start": "react-scripts start & nodemon ./server/index.js & mongod",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "server": "nodemon ./server/index.js & mongod",
