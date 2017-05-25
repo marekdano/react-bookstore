@@ -6,12 +6,14 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const router = require('./router');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // DB setup
 mongoose.connect('mongodb://localhost:auth/auth');
 
 // middleware setup
 const server = express();
+server.use(cors());
 // mount json-server on a specific end-point, '/api'
 // Optional except if you want to have json-server defaults which are logger, static, cors and no-cache
 server.use('/api', jsonServer.defaults());
