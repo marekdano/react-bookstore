@@ -6,7 +6,9 @@ import {
   DELETE_BOOK,
   SELECT_BOOK,
   UPDATE_BOOK,
-  LOAD } from './constants';
+  LOAD,
+  AUTH_USER,
+  UNAUTH_USER } from './constants';
 
 const ROOT_URL = 'http://localhost:5000';
 
@@ -75,13 +77,19 @@ export function loginUser({ email, password }) {
   return function(dispatch) {
     // submit email/password to the server
     axios.post(`${ROOT_URL}/login`, { email, password })
+      .then(response => {
+        // if request is good...
+        // - update state to indicate user is authenticated
+        dispatch({ type: AUTH_USER });
+        // - save the JWT token
+        // - redirect to the route '/feature'
 
-    // if request is good...
-    // - update state to indicate user is authenticated
-    // - save the JWT token
-    // - redirect to the route '/feature'
-
-    // if request is bad...
-    // - show an error to the user
+      })
+      .catch(() => {
+        // if request is bad...
+        // - show an error to the user
+      });
+   
+    
   }
 }
