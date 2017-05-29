@@ -8,7 +8,9 @@ import {
   UPDATE_BOOK,
   LOAD,
   AUTH_USER,
-  UNAUTH_USER } from './constants';
+  UNAUTH_USER,
+  AUTH_ERROR 
+} from './constants';
 
 const ROOT_URL = 'http://localhost:5000';
 
@@ -82,14 +84,21 @@ export function loginUser({ email, password }) {
         // - update state to indicate user is authenticated
         dispatch({ type: AUTH_USER });
         // - save the JWT token
+        localStorage.setItem('token', response.data.token);
         // - redirect to the route '/feature'
 
       })
       .catch(() => {
         // if request is bad...
         // - show an error to the user
-      });
-   
-    
+        dispatch(authError('Bad Login Info.'));
+      });   
   }
+}
+
+export function authError(error) {
+  return {
+    type: AUTH_ERROR,
+    payload: error
+  };
 }
