@@ -12,7 +12,7 @@ export const App = () => {
       <div className="container">
         <Header />
         <h1>Amazon by Hackages</h1>
-        <nav>
+        <nav className="sub-nav">
           <Link to="/dashboard">Books</Link>
           <Link to="/books">Manage Books</Link>
         </nav>
