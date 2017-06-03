@@ -7,6 +7,7 @@ import BookDetail from './Components/Bookdetail';
 import Dashboard from './Components/Dashboard';
 import Login from './Components/Auth/Login';
 import Logout from './Components/Auth/Logout';
+import Register from './Components/Auth/Register';
 import NotFoundPage from './Components/NotFoundPage';
 
 const routes = (
@@ -17,6 +18,7 @@ const routes = (
 		<Route path="/detail/:id" component={BookDetail} />
 		<Route path="/login" component={Login} />
 		<Route path="/logout" component={Logout} />
+		<Route path="/register" component={Register} />
 		<Route component={NotFoundPage} />
 	</Switch>
 );
