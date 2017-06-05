@@ -225,6 +225,11 @@ h4 {
     padding-right: 20px;
 }
 
+.error {
+    margin-left: 5px;
+    color: red;
+}
+
 @media (max-width: 600px) {
     .module {
         font-size: 10px;
