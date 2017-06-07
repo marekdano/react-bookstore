@@ -5,11 +5,16 @@ import { reduxForm, Field } from 'redux-form';
 import * as actions from '../../actions';
 
 class Register extends Component {
+	handleFormSubmit(formProps) {
+		// call action creator to sign up the user
+		this.props.registerUser(formProps);
+	}
+
 	render() {
 		const { handleSubmit, fields: { email, password, passwordConfirm }} = this.props;
 
 		return (
-			<form>
+			<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 				<fieldset className="form-group">
 					<label>Email:</label>
 					<Field name="email" component={renderField} type="email" className="form-control" />
@@ -66,4 +71,4 @@ Register = reduxForm({
 	validate: validate
 })(Register);
 
-export default connect()(Register);
+export default connect(null, actions)(Register);

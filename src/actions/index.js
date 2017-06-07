@@ -96,6 +96,13 @@ export function loginUser({ email, password }) {
   }
 }
 
+export function registerUser({ email, password }) {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/register`, { email, password })
+    
+  }
+}
+
 export function authError(error) {
   return {
     type: AUTH_ERROR,
