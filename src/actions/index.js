@@ -99,7 +99,14 @@ export function loginUser({ email, password }) {
 export function registerUser({ email, password }) {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/register`, { email, password })
-    
+     .then(response => {
+       console.log("response", response.data);
+       dispatch({ type: AUTH_USER });
+       localStorage.setItem('token', response.data.token);
+       // - redirect to the route '/feature'
+
+     })
+     .catch(error => dispatch(authError(error.response.data.error)));
   }
 }
 

@@ -10,6 +10,16 @@ class Register extends Component {
 		this.props.registerUser(formProps);
 	}
 
+	renderAlert() {
+		if (this.props.errorMessage) {
+			return (
+				<div className="alert alert-danger">
+					<strong>Oops!</strong> {this.props.errorMessage}
+				</div>
+			);
+		}
+	}
+
 	render() {
 		const { handleSubmit, fields: { email, password, passwordConfirm }} = this.props;
 
@@ -27,6 +37,7 @@ class Register extends Component {
 					<label>Confirm Password:</label>
 					<Field name="passwordConfirm" component={renderField} type="password" className="form-control" />
 				</fieldset>
+				{this.renderAlert()}
 				<button action="submit" className="btn btn-primary">Register</button>
 			</form>
 		);
@@ -65,10 +76,14 @@ function validate(formProps) {
 	return errors;
 }
 
+function mapStateToProps(state) {
+	return { errorMessage: state.auth.error }
+}
+
 Register = reduxForm({
 	form: 'register',
 	fields: ['email', 'password', 'passwordConfirm'],
 	validate: validate
 })(Register);
 
-export default connect(null, actions)(Register);
+export default connect(mapStateToProps, actions)(Register);
