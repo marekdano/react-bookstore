@@ -9,6 +9,7 @@ import Login from './Components/Auth/Login';
 import Logout from './Components/Auth/Logout';
 import Register from './Components/Auth/Register';
 import Feature from './Components/Feature';
+import { PrivateRoute } from './Components/Auth/require-auth';
 import NotFoundPage from './Components/NotFoundPage';
 
 const routes = (
@@ -20,7 +21,7 @@ const routes = (
 		<Route path="/login" component={Login} />
 		<Route path="/logout" component={Logout} />
 		<Route path="/register" component={Register} />
-		<Route path="/feature" component={Feature} />
+		<PrivateRoute path="/feature" component={Feature}/>
 		<Route component={NotFoundPage} />
 	</Switch>
 );
