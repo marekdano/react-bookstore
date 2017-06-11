@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import * as actions from '../../actions';
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
 
@@ -22,10 +23,21 @@ class Login extends Component {
 		}
 	}
 
+	getRedirectPath() {
+    const locationState = this.props.location.state;
+    if (locationState && locationState.from.pathname) {
+      return locationState.from.pathname // redirects to referring url
+    } else {
+      return '/'
+    }
+  }		
+
 	render() {
 		const { handleSubmit, fields: { email, password }} = this.props;
 
-		return (
+		return (this.props.authenticated ?
+			<Redirect to={{ pathname: this.getRedirectPath(), state: { from: this.props.location } }} />
+			:
 			<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 				<fieldset className="form-group">
 					<label>Email:</label>

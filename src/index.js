@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 import thunkMiddleware from 'redux-thunk';
 import promiseMiddleware from 'redux-promise-middleware';
+import { AUTH_USER } from './actions/constants';
 
 import { App } from './main/App';
 
@@ -24,8 +25,15 @@ const store = (preloadedState) => {
     )
   );
   
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    store.dispatch({ type: AUTH_USER }) 
+  }
+
   return store;
 };
+
 
 ReactDOM.render(
   <Provider store={store()}>

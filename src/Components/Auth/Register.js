@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import * as actions from '../../actions';
+import { Redirect } from 'react-router-dom';
+
 
 class Register extends Component {
 	handleFormSubmit(formProps) {
@@ -20,10 +22,21 @@ class Register extends Component {
 		}
 	}
 
+	getRedirectPath() {
+    const locationState = this.props.location.state;
+    if (locationState && locationState.from.pathname) {
+      return locationState.from.pathname
+    } else {
+      return '/'
+    }
+  }
+
 	render() {
 		const { handleSubmit, fields: { email, password, passwordConfirm }} = this.props;
 
-		return (
+		return (this.props.authenticated ?
+			<Redirect to={{ pathname: this.getRedirectPath(), state: {from: this.props.location} }} />
+      :
 			<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 				<fieldset className="form-group">
 					<label>Email:</label>
@@ -77,7 +90,10 @@ function validate(formProps) {
 }
 
 function mapStateToProps(state) {
-	return { errorMessage: state.auth.error }
+	return { 
+		authenticated: state.auth.authenticated,
+		errorMessage: state.auth.error 
+	};
 }
 
 Register = reduxForm({
