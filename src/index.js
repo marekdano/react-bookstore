@@ -26,9 +26,10 @@ const store = (preloadedState) => {
   );
   
   const token = localStorage.getItem('token');
-
+  // if we have a token, consider the user to be signed in
   if (token) {
-    store.dispatch({ type: AUTH_USER }) 
+    // we need to update application state
+    store.dispatch({ type: AUTH_USER }); 
   }
 
   return store;
