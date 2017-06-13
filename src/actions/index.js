@@ -122,3 +122,14 @@ export function logoutUser() {
 
   return { type: UNAUTH_USER };
 }
+
+export function fetchMessage() {
+  return function(dispatch) {
+    // TODO token has to be included in the request
+    // for authentication 
+    axios.get(ROOT_URL)
+      .then(response => {
+        console.log("Response in fetchMessage", response);
+      });
+  }
+}
