@@ -125,9 +125,10 @@ export function logoutUser() {
 
 export function fetchMessage() {
   return function(dispatch) {
-    // TODO token has to be included in the request
-    // for authentication 
-    axios.get(ROOT_URL)
+    // token has to be included in the request for user authentication 
+    axios.get(ROOT_URL, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
       .then(response => {
         console.log("Response in fetchMessage", response);
       });
