@@ -21,7 +21,7 @@ const store = (preloadedState) => {
     preloadedState,
     applyMiddleware(
       thunkMiddleware,
-      promiseMiddleware()    
+      promiseMiddleware    
     )
   );
   
